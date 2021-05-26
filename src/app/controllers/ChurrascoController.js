@@ -1,3 +1,4 @@
+/*
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 
@@ -118,3 +119,4 @@ router.delete('/:churrascoId', async (req, res) => {
 
 module.exports = app => app.use('/churrascos', router);
 
+*/

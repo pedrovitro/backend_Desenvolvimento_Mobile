@@ -30,9 +30,9 @@ router.get('/:itemId', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
 
-        const { name, price } = req.body;
+        const { name, estabelecimento } = req.body;
 
-        const item = await Item.create({ name, price});
+        const item = await Item.create({ name, estabelecimento});
 
         await item.save();
 
@@ -45,9 +45,9 @@ router.post('/', async (req, res) => {
 router.put('/:itemId', async (req, res) => {
     try {
 
-        const { name, price } = req.body;
+        const { name, estabelecimento } = req.body;
 
-        const item = await Item.findByIdAndUpdate(req.params.itemId, { name, price }, { new: true });
+        const item = await Item.findByIdAndUpdate(req.params.itemId, { name, estabelecimento }, { new: true });
 
         await item.save();
 
@@ -67,5 +67,5 @@ router.delete('/:itemId', async (req, res) => {
     }
 });
 
-module.exports = app => app.use('/itens', router);
 
+module.exports = app => app.use('/cidade', router);

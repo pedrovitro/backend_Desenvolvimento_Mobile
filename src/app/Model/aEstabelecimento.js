@@ -5,11 +5,11 @@ const EstabelecimentoSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    descrição: {
+    descricao: {
         type: String,
         require: true
     }, 
-    avaliação: {
+    avaliacao: {
         type: Number,
         require: true
     }, 
