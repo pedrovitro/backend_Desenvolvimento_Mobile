@@ -16,4 +16,6 @@ require('./app/controllers/ItensController')(app);
 require('./app/controllers/UsersController')(app);
 require('./app/controllers/FriendController')(app);
 
+//mudar de acordo com o controller
+
 app.listen(3333);
