@@ -17,6 +17,6 @@ require('./app/controllers/UsuarioController')(app);
 require('./app/controllers/ReservaController')(app);
 require('./app/controllers/EstabelecimentoController')(app);
 
-//mudar de acordo com o controller
 
-app.listen(3333);
+
+app.listen(process.env.PORT || 3333);
