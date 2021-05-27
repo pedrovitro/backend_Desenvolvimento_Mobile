@@ -1,7 +1,7 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 
-const Item = require('../Model/Item');
+const Cidade = require('../Model/Cidade');
 
 const router = express.Router();
 
@@ -9,21 +9,21 @@ router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
     try {
-        const itens = await Item.find();
+        const cidades = await Cidade.find().populate(['name', 'estabelecimento']);
 
-        return res.send({ itens });
+        return res.send({ cidades });
     } catch (err) {
-        return res.status(400).send({ error: 'Error loading itens' })
+        return res.status(400).send({ error: 'Error loading cidades' })
     }
 });
 
-router.get('/:itemId', async (req, res) => {
+router.get('/:cidadeId', async (req, res) => {
     try {
-        const item = await Item.findById(req.params.itemId);
+        const cidade = await Cidade.findById(req.params.cidadeId).populate(['name', 'estabelecimento']);
 
-        return res.send({ item });
+        return res.send({ cidade });
     } catch (err) {
-        return res.status(400).send({ error: 'Error loading item' })
+        return res.status(400).send({ error: 'Error loading cidade' })
     }
 });
 
@@ -32,38 +32,38 @@ router.post('/', async (req, res) => {
 
         const { name, estabelecimento } = req.body;
 
-        const item = await Item.create({ name, estabelecimento});
+        const cidade = await Cidade.create({ name, estabelecimento});
 
-        await item.save();
+        await cidade.save();
 
-        return res.send({ item });
+        return res.send({ cidade });
     } catch (err) {
-        return res.status(400).send({ error: 'Error creating new item' })
+        return res.status(400).send({ error: 'Error creating new cidade' })
     }
 });
 
-router.put('/:itemId', async (req, res) => {
+router.put('/:cidadeId', async (req, res) => {
     try {
 
         const { name, estabelecimento } = req.body;
 
-        const item = await Item.findByIdAndUpdate(req.params.itemId, { name, estabelecimento }, { new: true });
+        const cidade = await Cidade.findByIdAndUpdate(req.params.cidadeId, { name, estabelecimento }, { new: true });
 
-        await item.save();
+        await cidade.save();
 
-        return res.send({ item });
+        return res.send({ cidade });
     } catch (err) {
-        return res.status(400).send({ error: 'Error updating item' })
+        return res.status(400).send({ error: 'Error updating cidade' })
     }
 });
 
-router.delete('/:itemId', async (req, res) => {
+router.delete('/:cidadeId', async (req, res) => {
     try {
-        await Item.findByIdAndRemove(req.params.itemId);
+        await Cidade.findByIdAndRemove(req.params.cidadeId);
 
         return res.send();
     } catch (err) {
-        return res.status(400).send({ error: 'Error deleting item' })
+        return res.status(400).send({ error: 'Error deleting cidade' })
     }
 });
 

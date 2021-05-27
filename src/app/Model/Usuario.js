@@ -1,7 +1,7 @@
 const mongoose = require('../../database');
 
 const UsuarioSchema = new mongoose.Schema({
-    login: {
+    email: {
         type: String,
         require: true
     },

@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('../Model/User');
+const Usuario = require('../Model/Usuario');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -18,16 +18,16 @@ router.post('/register', async (req, res) => {
     const { email } = req.body;
     try {
 
-        if (await User.findOne({ email }))
+        if (await Usuario.findOne({ email }))
             return res.status(400).send({ error: 'User already exists' });
 
-        const user = await User.create(req.body);
+        const usuario = await Usuario.create(req.body);
 
-        user.password = undefined;
+        usuario.senha = undefined;
 
         return res.send({
-            user,
-            token: generateToken({ id: user.id }),
+            usuario,
+            token: generateToken({ id: usuario.id }),
         });
     } catch (err) {
         return res.status(400).send({ error: 'Registration failed' });
@@ -35,22 +35,22 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/authenticate', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, senha } = req.body;
 
-    const user = await User.findOne({ email }).select('+password');
+    const usuario = await Usuario.findOne({ email }).select('+senha');
 
-    if (!user) {
+    if (!usuario) {
         return res.status(400).send({ error: 'User not found' });
     }
 
-    if (!await bcrypt.compare(password, user.password))
-        return res.status(400).send({ error: 'invalid password' });
+    if (!await bcrypt.compare(senha, usuario.senha))
+        return res.status(400).send({ error: 'invalid senha' });
 
-    user.password = undefined;
+        usuario.senha = undefined;
 
     res.send({
-        user,
-        token: generateToken({ id: user.id }),
+        usuario,
+        token: generateToken({ id: usuario.id }),
     });
 
 });
@@ -61,9 +61,9 @@ router.post('/forgot_password', async (req, res) => {
 
     try {
 
-        const user = await User.findOne({ email });
+        const usuario = await Usuario.findOne({ email });
 
-        if (!user)
+        if (!usuario)
             return res.status(400).send({ error: 'User not find' });
 
         const token = crypto.randomBytes(20).toString('hex');
@@ -71,7 +71,7 @@ router.post('/forgot_password', async (req, res) => {
         const now = new Date();
         now.setHours(now.getHours() + 1);
 
-        await User.findByIdAndUpdate(user.id, {
+        await Usuario.findByIdAndUpdate(usuario.id, {
             '$set': {
                 passwordResetToken: token,
                 passwordResetExpires: now,
@@ -80,7 +80,7 @@ router.post('/forgot_password', async (req, res) => {
 
         mailer.sendMail({
             to: email,
-            from: 'dexacomigo@gmail.com',
+            from: 'listalugares@gmail.com',
             template: 'auth/forgot_password',
             context: { token }
         }, (err) => {
@@ -97,25 +97,25 @@ router.post('/forgot_password', async (req, res) => {
 })
 
 router.post('/reset_password', async (req, res) => {
-    const { email, token, password } = req.body;
+    const { email, token, senha } = req.body;
 
     try {
-        const user = await User.findOne({ email }).select('+passwordResetToken passwordResetExpires');
+        const usuario = await Usuario.findOne({ email }).select('+passwordResetToken passwordResetExpires');
 
-        if (!user)
+        if (!usuario)
             return res.status(400).send({ error: 'User not find' });
 
-        if (token !== user.passwordResetToken)
+        if (token !== usuario.passwordResetToken)
             return res.status(400).send({ error: 'Token invalid' });
 
         const now = new Date();
 
-        if (now > user.passwordResetExpires)
+        if (now > usuario.passwordResetExpires)
             return res.status(400).send({ error: 'Token expired, generate a new one' })
 
-        user.password = password;
+            usuario.senha = senha;
 
-        await user.save();
+        await usuario.save();
 
         res.send();
     } catch (err) {

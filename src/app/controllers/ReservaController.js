@@ -1,7 +1,7 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 
-const Item = require('../Model/Item');
+const Reserva = require('../Model/Reserva');
 
 const router = express.Router();
 
@@ -9,21 +9,21 @@ router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
     try {
-        const itens = await Item.find();
+        const reservas = await Reserva.find({ usuario: usuario }).populate(['usuario', 'estabelecimento', 'date']);
 
-        return res.send({ itens });
+        return res.send({ reservas });
     } catch (err) {
-        return res.status(400).send({ error: 'Error loading itens' })
+        return res.status(400).send({ error: 'Error loading reserva' })
     }
 });
 
-router.get('/:itemId', async (req, res) => {
+router.get('/:reservaId', async (req, res) => {
     try {
-        const item = await Item.findById(req.params.itemId);
+        const reserva = await Reserva.findById(req.params.reservaId).populate(['usuario', 'estabelecimento', 'date']);
 
-        return res.send({ item });
+        return res.send({ reserva });
     } catch (err) {
-        return res.status(400).send({ error: 'Error loading item' })
+        return res.status(400).send({ error: 'Error loading reserva' })
     }
 });
 
@@ -32,40 +32,40 @@ router.post('/', async (req, res) => {
 
         const { estabelecimento, usuario, date } = req.body;
 
-        const item = await Item.create({ estabelecimento, usuario, date});
+        const reserva = await Reserva.create({ estabelecimento, usuario, date});
 
-        await item.save();
+        await reserva.save();
 
-        return res.send({ item });
+        return res.send({ reserva });
     } catch (err) {
-        return res.status(400).send({ error: 'Error creating new item' })
+        return res.status(400).send({ error: 'Error creating new reserva' })
     }
 });
 
-router.put('/:itemId', async (req, res) => {
+router.put('/:reservaId', async (req, res) => {
     try {
 
         const { estabelecimento, usuario, date } = req.body;
 
-        const item = await Item.findByIdAndUpdate(req.params.itemId, { estabelecimento, usuario, date}, { new: true });
+        const reserva = await Reserva.findByIdAndUpdate(req.params.reservaId, { estabelecimento, usuario, date}, { new: true });
 
-        await item.save();
+        await reserva.save();
 
-        return res.send({ item });
+        return res.send({ reserva });
     } catch (err) {
-        return res.status(400).send({ error: 'Error updating item' })
+        return res.status(400).send({ error: 'Error updating reserva' })
     }
 });
 
-router.delete('/:itemId', async (req, res) => {
+router.delete('/:reservaId', async (req, res) => {
     try {
-        await Item.findByIdAndRemove(req.params.itemId);
+        await Reserva.findByIdAndRemove(req.params.reservaId);
 
         return res.send();
     } catch (err) {
-        return res.status(400).send({ error: 'Error deleting item' })
+        return res.status(400).send({ error: 'Error deleting reserva' })
     }
 });
 
 
-module.exports = app => app.use('/itens', router);
+module.exports = app => app.use('/reserva', router);

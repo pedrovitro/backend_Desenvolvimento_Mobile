@@ -1,7 +1,7 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 
-const Item = require('../Model/Item');
+const Categoria = require('../Model/Categoria');
 
 const router = express.Router();
 
@@ -9,21 +9,21 @@ router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
     try {
-        const itens = await Item.find();
+        const categorias = await Categoria.find().populate(['name', 'estabelecimento']);
 
-        return res.send({ itens });
+        return res.send({ categorias });
     } catch (err) {
-        return res.status(400).send({ error: 'Error loading itens' })
+        return res.status(400).send({ error: 'Error loading categorias' })
     }
 });
 
-router.get('/:itemId', async (req, res) => {
+router.get('/:categoriaId', async (req, res) => {
     try {
-        const item = await Item.findById(req.params.itemId);
+        const categoria = await Categoria.findById(req.params.categoriaId).populate(['name', 'estabelecimento']);
 
-        return res.send({ item });
+        return res.send({ categoria });
     } catch (err) {
-        return res.status(400).send({ error: 'Error loading item' })
+        return res.status(400).send({ error: 'Error loading categoria' })
     }
 });
 
@@ -32,38 +32,38 @@ router.post('/', async (req, res) => {
 
         const { name, estabelecimento } = req.body;
 
-        const item = await Item.create({ name, estabelecimento});
+        const categoria = await Categoria.create({ name, estabelecimento});
 
-        await item.save();
+        await categoria.save();
 
-        return res.send({ item });
+        return res.send({ categoria });
     } catch (err) {
-        return res.status(400).send({ error: 'Error creating new item' })
+        return res.status(400).send({ error: 'Error creating new categoria' })
     }
 });
 
-router.put('/:itemId', async (req, res) => {
+router.put('/:categoriaId', async (req, res) => {
     try {
 
         const { name, estabelecimento } = req.body;
 
-        const item = await Item.findByIdAndUpdate(req.params.itemId, { name, estabelecimento }, { new: true });
+        const categoria = await Categoria.findByIdAndUpdate(req.params.categoriaId, { name, estabelecimento }, { new: true });
 
-        await item.save();
+        await categoria.save();
 
-        return res.send({ item });
+        return res.send({ categoria });
     } catch (err) {
-        return res.status(400).send({ error: 'Error updating item' })
+        return res.status(400).send({ error: 'Error updating categoria' })
     }
 });
 
-router.delete('/:itemId', async (req, res) => {
+router.delete('/:categoriaId', async (req, res) => {
     try {
-        await Item.findByIdAndRemove(req.params.itemId);
+        await Categoria.findByIdAndRemove(req.params.categoriaId);
 
         return res.send();
     } catch (err) {
-        return res.status(400).send({ error: 'Error deleting item' })
+        return res.status(400).send({ error: 'Error deleting categoria' })
     }
 });
 

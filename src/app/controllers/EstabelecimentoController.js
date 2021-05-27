@@ -1,7 +1,7 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 
-const Item = require('../Model/Item');
+const Estabelecimento = require('../Model/Estabelecimento');
 
 const router = express.Router();
 
@@ -9,21 +9,21 @@ router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
     try {
-        const itens = await Item.find();
+        const estabelecimentos = await Estabelecimento.find().populate(['nome', 'descricao',' avaliacao' ,' reserva' ,' categoria' ,' cidade']);
 
-        return res.send({ itens });
+        return res.send({ estabelecimentos });
     } catch (err) {
-        return res.status(400).send({ error: 'Error loading itens' })
+        return res.status(400).send({ error: 'Error loading estabelecimentos' })
     }
 });
 
-router.get('/:itemId', async (req, res) => {
+router.get('/:estabelecimentoId', async (req, res) => {
     try {
-        const item = await Item.findById(req.params.itemId);
+        const estabelecimento = await Estabelecimento.findById(req.params.estabelecimentoId).populate(['nome', 'descricao',' avaliacao' ,' reserva' ,' categoria' ,' cidade']);
 
-        return res.send({ item });
+        return res.send({ estabelecimento });
     } catch (err) {
-        return res.status(400).send({ error: 'Error loading item' })
+        return res.status(400).send({ error: 'Error loading estabelecimento' })
     }
 });
 
@@ -32,40 +32,40 @@ router.post('/', async (req, res) => {
 
         const { nome, descricao, avaliacao, reserva, categoria,cidade  } = req.body;
 
-        const item = await Item.create({ nome, descricao, avaliacao, reserva, categoria, cidade});
+        const estabelecimento = await Estabelecimento.create({ nome, descricao, avaliacao, reserva, categoria, cidade});
 
-        await item.save();
+        await estabelecimento.save();
 
-        return res.send({ item });
+        return res.send({ estabelecimento });
     } catch (err) {
-        return res.status(400).send({ error: 'Error creating new item' })
+        return res.status(400).send({ error: 'Error creating new estabelecimento' })
     }
 });
 
-router.put('/:itemId', async (req, res) => {
+router.put('/:estabelecimentoId', async (req, res) => {
     try {
 
         const { nome, descricao, avaliacao, reserva, categoria, cidade } = req.body;
 
-        const item = await Item.findByIdAndUpdate(req.params.itemId, { nome, descricao, avaliacao, reserva, categoria, cidade }, { new: true });
+        const estabelecimento = await Estabelecimento.findByIdAndUpdate(req.params.estabelecimentoId, { nome, descricao, avaliacao, reserva, categoria, cidade }, { new: true });
 
-        await item.save();
+        await estabelecimento.save();
 
-        return res.send({ item });
+        return res.send({ estabelecimento });
     } catch (err) {
-        return res.status(400).send({ error: 'Error updating item' })
+        return res.status(400).send({ error: 'Error updating estabelecimento' })
     }
 });
 
-router.delete('/:itemId', async (req, res) => {
+router.delete('/:estabelecimentoId', async (req, res) => {
     try {
-        await Item.findByIdAndRemove(req.params.itemId);
+        await Estabelecimento.findByIdAndRemove(req.params.estabelecimentoId);
 
         return res.send();
     } catch (err) {
-        return res.status(400).send({ error: 'Error deleting item' })
+        return res.status(400).send({ error: 'Error deleting estabelecimento' })
     }
 });
 
 
-module.exports = app => app.use('/estabeecimento', router);
+module.exports = app => app.use('/estabelecimento', router);
