@@ -36,6 +36,7 @@ router.post('/register', async (req, res) => {
 
 router.post('/authenticate', async (req, res) => {
     const { email, senha } = req.body;
+    console.log("passou auth");
 
     const usuario = await Usuario.findOne({ email }).select('+senha');
 
