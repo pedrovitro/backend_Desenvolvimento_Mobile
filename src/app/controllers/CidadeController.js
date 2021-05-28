@@ -1,16 +1,19 @@
 const express = require('express');
-const authMiddleware = require('../middlewares/auth');
+// const authMiddleware = require('../middlewares/auth');
 
 const Cidade = require('../Model/Cidade');
 
 const router = express.Router();
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
+    console.log('passou cidade')
     try {
-        const cidades = await Cidade.find().populate(['name', 'estabelecimento']);
+        console.log('passou cidade2')
 
+        const cidades = await Cidade.find();
+        console.log(cidades)
         return res.send({ cidades });
     } catch (err) {
         return res.status(400).send({ error: 'Error loading cidades' })

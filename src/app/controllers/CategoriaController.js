@@ -1,16 +1,16 @@
 const express = require('express');
-const authMiddleware = require('../middlewares/auth');
+// const authMiddleware = require('../middlewares/auth');
 
 const Categoria = require('../Model/Categoria');
 
 const router = express.Router();
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
     try {
-        const categorias = await Categoria.find().populate(['name', 'estabelecimento']);
-
+        const categorias = await Categoria.find();
+        console.log(categorias)
         return res.send({ categorias });
     } catch (err) {
         return res.status(400).send({ error: 'Error loading categorias' })
