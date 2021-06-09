@@ -15,7 +15,7 @@ const EstabelecimentoSchema = new mongoose.Schema({
     }, 
     reserva: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Reseva'
+        ref: 'Reserva'
     },
     categoria: {
         type: mongoose.Schema.Types.ObjectId,

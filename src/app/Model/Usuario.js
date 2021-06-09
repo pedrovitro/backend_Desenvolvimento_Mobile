@@ -11,7 +11,7 @@ const UsuarioSchema = new mongoose.Schema({
     }, 
     reserva: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Reseva'
+        ref: 'Reserva'
     }
 });
 
