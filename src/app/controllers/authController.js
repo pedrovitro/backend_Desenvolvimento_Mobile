@@ -34,24 +34,24 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.post('/authenticate', async (req, res) => {
+router.post('/authenticate', async (req, resp) => {
     const { email, senha } = req.body;
     console.log("passou auth");
 
-    const usuario = await Usuario.findOne({ email }).select('+senha');
+    const user = await Usuario.findOne({ email }).select('+senha');
 
-    if (!usuario) {
-        return res.status(400).send({ error: 'User not found' });
+    if (!user) {
+        return resp.status(400).send({ error: 'User not found' });
     }
 
-    if (!await bcrypt.compare(senha, usuario.senha))
-        return res.status(400).send({ error: 'invalid senha' });
+    if (!await bcrypt.compare(senha, user.senha))
+        return resp.status(400).send({ error: 'invalid senha' });
 
-        usuario.senha = undefined;
+        user.senha = undefined;
 
-    res.send({
-        usuario,
-        token: generateToken({ id: usuario.id }),
+    resp.send({
+        user,
+        token: generateToken({ id: user.id }),
     });
 
 });
