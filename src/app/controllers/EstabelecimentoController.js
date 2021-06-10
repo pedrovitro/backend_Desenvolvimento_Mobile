@@ -5,11 +5,11 @@ const Estabelecimento = require('../Model/Estabelecimento');
 
 const router = express.Router();
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
     try {
-        const estabelecimentos = await Estabelecimento.find().populate(['nome', 'descricao',' avaliacao' ,' reserva' ,' categoria' ,' cidade']);
+        const estabelecimentos = await Estabelecimento.find();
 
         return res.send({ estabelecimentos });
     } catch (err) {

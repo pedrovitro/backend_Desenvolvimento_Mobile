@@ -5,11 +5,11 @@ const Reserva = require('../Model/Reserva');
 
 const router = express.Router();
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
     try {
-        const reservas = await Reserva.find({ usuario: usuario }).populate(['usuario', 'estabelecimento', 'date']);
+        const reservas = await Reserva.find({ usuario: usuario })
 
         return res.send({ reservas });
     } catch (err) {
