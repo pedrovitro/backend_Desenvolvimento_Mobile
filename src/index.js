@@ -19,4 +19,4 @@ require('./app/controllers/EstabelecimentoController')(app);
 
 
 
-app.listen(3333, "0.0.0.0");
+app.listen(3333);

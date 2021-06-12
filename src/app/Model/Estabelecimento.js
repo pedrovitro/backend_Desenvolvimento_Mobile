@@ -13,6 +13,10 @@ const EstabelecimentoSchema = new mongoose.Schema({
         type: Number,
         require: true
     }, 
+    telefone: {
+        type: Number,
+        require: true
+    },
     reserva: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Reserva'
