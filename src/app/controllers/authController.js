@@ -44,13 +44,13 @@ router.post('/authenticate', async (req, resp) => {
     console.log("passou auth :" + email + " " + senha);
 
     const usuario = await Usuario.findOne({ email }).select('+senha');
-    console.log("user: " + usuario)
+    console.log("user: " + usuario + " " + usuario.senha)
 
     if (!usuario) {
         return resp.status(400).send({ error: 'User not found' });
     }
 
-    if (!await bcrypt.compare(senha, usuario.senha))
+    if (senha != usuario.senha)
         return resp.status(401).send({ error: 'invalid senha' });
 
         usuario.senha = undefined;
