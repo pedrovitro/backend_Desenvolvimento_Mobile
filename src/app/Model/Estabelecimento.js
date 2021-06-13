@@ -17,10 +17,10 @@ const EstabelecimentoSchema = new mongoose.Schema({
         type: Number,
         require: true
     },
-    reserva: {
+    reserva: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Reserva'
-    },
+    }],
     categoria: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Categoria'

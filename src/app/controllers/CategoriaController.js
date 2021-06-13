@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     console.log("oi")
     try {
-        const categorias = await Categoria.find();
+        const categorias = await Categoria.find().populate(['estabelecimento']);
 
         return res.send({ categorias });
     } catch (err) {
@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:categoriaId', async (req, res) => {
     try {
-        const categoria = await Categoria.findById(req.params.categoriaId).populate(['name', 'estabelecimento']);
+        const categoria = await Categoria.findById(req.params.categoriaId).populate(['estabelecimento']);
 
         return res.send({ categoria });
     } catch (err) {

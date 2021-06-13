@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     try {
         const estabelecimentos = await Estabelecimento.find();
 
-        return res.send({ estabelecimentos });
+        return res.send({ estabelecimentos }).populate([' reserva' ,' categoria' ,' cidade']);
     } catch (err) {
         return res.status(400).send({ error: 'Error loading estabelecimentos' })
     }
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:estabelecimentoId', async (req, res) => {
     try {
-        const estabelecimento = await Estabelecimento.findById(req.params.estabelecimentoId).populate(['nome', 'descricao',' avaliacao' ,' reserva' ,' categoria' ,' cidade']);
+        const estabelecimento = await Estabelecimento.findById(req.params.estabelecimentoId).populate([' reserva' ,' categoria' ,' cidade']);
 
         return res.send({ estabelecimento });
     } catch (err) {

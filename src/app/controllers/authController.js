@@ -16,6 +16,7 @@ function generateToken(params = {}) {
 
 router.post('/register', async (req, res) => {
     const { email } = req.body;
+    console.log(req.body)
     try {
 
         if (await Usuario.findOne({ email }))
@@ -25,9 +26,13 @@ router.post('/register', async (req, res) => {
 
         usuario.senha = undefined;
 
+        const data ={
+            usuario: usuario,
+            token : generateToken({ id: usuario.id })
+        }
+        console.log(data)
         return res.send({
-            usuario,
-            token: generateToken({ id: usuario.id }),
+           data
         });
     } catch (err) {
         return res.status(400).send({ error: 'Registration failed' });
@@ -36,22 +41,23 @@ router.post('/register', async (req, res) => {
 
 router.post('/authenticate', async (req, resp) => {
     const { email, senha } = req.body;
-    console.log("passou auth");
+    console.log("passou auth :" + email + " " + senha);
 
-    const user = await Usuario.findOne({ email }).select('+senha');
+    const usuario = await Usuario.findOne({ email }).select('+senha');
+    console.log("user: " + usuario)
 
-    if (!user) {
+    if (!usuario) {
         return resp.status(400).send({ error: 'User not found' });
     }
 
-    if (!await bcrypt.compare(senha, user.senha))
-        return resp.status(400).send({ error: 'invalid senha' });
+    if (!await bcrypt.compare(senha, usuario.senha))
+        return resp.status(401).send({ error: 'invalid senha' });
 
-        user.senha = undefined;
+        usuario.senha = undefined;
 
     resp.send({
-        user,
-        token: generateToken({ id: user.id }),
+        usuario,
+        token: generateToken({ id: usuario.id }),
     });
 
 });

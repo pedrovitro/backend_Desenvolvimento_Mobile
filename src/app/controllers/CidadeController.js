@@ -13,13 +13,13 @@ router.get('/', async (req, res) => {
 
         return res.send({ cidades });
     } catch (err) {
-        return res.status(400).send({ error: 'Error loading cidades' })
+        return res.status(400).send({ error: 'Error loading cidades' }).populate(['estabelecimento']);
     }
 });
 
 router.get('/:cidadeId', async (req, res) => {
     try {
-        const cidade = await Cidade.findById(req.params.cidadeId).populate(['name', 'estabelecimento']);
+        const cidade = await Cidade.findById(req.params.cidadeId).populate(['estabelecimento']);
 
         return res.send({ cidade });
     } catch (err) {
