@@ -9,6 +9,10 @@ const CategoriaSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Estabelecimento'
     }],
+    cidade: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Cidade'
+    }],
     
 });
 
