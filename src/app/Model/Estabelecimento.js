@@ -14,7 +14,7 @@ const EstabelecimentoSchema = new mongoose.Schema({
         require: true
     }, 
     telefone: {
-        type: Number,
+        type: String,
         require: true
     },
     endereco: {
