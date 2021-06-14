@@ -5,13 +5,13 @@ const Estabelecimento = require('../Model/Estabelecimento');
 
 const router = express.Router();
 
-// router.use(authMiddleware);
+router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
     try {
-        const estabelecimentos = await Estabelecimento.find();
+        const estabelecimentos = await Estabelecimento.find().populate([' reserva' ,' categoria' ,' cidade']);
 
-        return res.send({ estabelecimentos }).populate([' reserva' ,' categoria' ,' cidade']);
+        return res.send({ estabelecimentos });
     } catch (err) {
         return res.status(400).send({ error: 'Error loading estabelecimentos' })
     }

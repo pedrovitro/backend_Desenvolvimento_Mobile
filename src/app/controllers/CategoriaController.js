@@ -5,7 +5,7 @@ const Categoria = require('../Model/Categoria');
 
 const router = express.Router();
 
-// router.use(authMiddleware);
+router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
     console.log("oi")

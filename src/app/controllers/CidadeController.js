@@ -5,15 +5,15 @@ const Cidade = require('../Model/Cidade');
 
 const router = express.Router();
 
-// router.use(authMiddleware);
+router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
     try {
-        const cidades = await Cidade.find();
+        const cidades = await Cidade.find().populate(['estabelecimento', 'categoria']);
 
         return res.send({ cidades });
     } catch (err) {
-        return res.status(400).send({ error: 'Error loading cidades' }).populate(['estabelecimento']);
+        return res.status(400).send({ error: 'Error loading cidades' });
     }
 });
 

@@ -5,7 +5,7 @@ const Reserva = require('../Model/Reserva');
 
 const router = express.Router();
 
-// router.use(authMiddleware);
+router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
     try {
