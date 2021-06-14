@@ -9,7 +9,7 @@ router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
     try {
-        const reservas = await Reserva.find({ usuario: usuario })
+        const reservas = await Reserva.find({ usuario: usuario }).populate(['usuario', 'estabelecimento'])
 
         return res.send({ reservas });
     } catch (err) {
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:reservaId', async (req, res) => {
     try {
-        const reserva = await Reserva.findById(req.params.reservaId).populate(['usuario', 'estabelecimento', 'date']);
+        const reserva = await Reserva.findById(req.params.reservaId).populate(['usuario', 'estabelecimento']);
 
         return res.send({ reserva });
     } catch (err) {

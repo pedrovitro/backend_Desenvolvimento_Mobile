@@ -17,6 +17,17 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:cidade', async (req, res) => {
+    const {cidade} = req.params
+    try {
+        const estabelecimentos = await Estabelecimento.find({ cidade: cidade}).populate([' reserva' ,' categoria' ,' cidade']);
+
+        return res.send({ estabelecimentos });
+    } catch (err) {
+        return res.status(400).send({ error: 'Error loading estabelecimentos' })
+    }
+});
+
 router.get('/:estabelecimentoId', async (req, res) => {
     try {
         const estabelecimento = await Estabelecimento.findById(req.params.estabelecimentoId).populate([' reserva' ,' categoria' ,' cidade']);
