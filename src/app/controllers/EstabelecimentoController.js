@@ -30,9 +30,9 @@ router.get('/:estabelecimentoId', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
 
-        const { nome, descricao, avaliacao, reserva, categoria,cidade  } = req.body;
+        const { nome, descricao, avaliacao, telefone, endereco, reserva, categoria,cidade  } = req.body;
 
-        const estabelecimento = await Estabelecimento.create({ nome, descricao, avaliacao, reserva, categoria, cidade});
+        const estabelecimento = await Estabelecimento.create({ nome, descricao, avaliacao, telefone, endereco, reserva, categoria, cidade});
 
         await estabelecimento.save();
 
@@ -45,9 +45,9 @@ router.post('/', async (req, res) => {
 router.put('/:estabelecimentoId', async (req, res) => {
     try {
 
-        const { nome, descricao, avaliacao, reserva, categoria, cidade } = req.body;
+        const { nome, descricao, avaliacao, telefone, endereco, reserva, categoria, cidade } = req.body;
 
-        const estabelecimento = await Estabelecimento.findByIdAndUpdate(req.params.estabelecimentoId, { nome, descricao, avaliacao, reserva, categoria, cidade }, { new: true });
+        const estabelecimento = await Estabelecimento.findByIdAndUpdate(req.params.estabelecimentoId, { nome, descricao, avaliacao, telefone, endereco,  reserva, categoria, cidade }, { new: true });
 
         await estabelecimento.save();
 

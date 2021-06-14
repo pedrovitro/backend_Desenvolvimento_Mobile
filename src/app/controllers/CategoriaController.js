@@ -10,7 +10,7 @@ router.use(authMiddleware);
 router.get('/', async (req, res) => {
     console.log("oi")
     try {
-        const categorias = await Categoria.find().populate(['estabelecimento']);
+        const categorias = await Categoria.find().populate(['estabelecimento','cidade']);
 
         return res.send({ categorias });
     } catch (err) {
@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:categoriaId', async (req, res) => {
     try {
-        const categoria = await Categoria.findById(req.params.categoriaId).populate(['estabelecimento']);
+        const categoria = await Categoria.findById(req.params.categoriaId).populate(['estabelecimento' ,'cidade']);
 
         return res.send({ categoria });
     } catch (err) {
@@ -31,9 +31,9 @@ router.get('/:categoriaId', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
 
-        const { name, estabelecimento } = req.body;
+        const { name, cidade,estabelecimento } = req.body;
 
-        const categoria = await Categoria.create({ name, estabelecimento});
+        const categoria = await Categoria.create({ name,cidade, estabelecimento});
 
         await categoria.save();
 
@@ -46,9 +46,9 @@ router.post('/', async (req, res) => {
 router.put('/:categoriaId', async (req, res) => {
     try {
 
-        const { name, estabelecimento } = req.body;
+        const { name, cidade,estabelecimento } = req.body;
 
-        const categoria = await Categoria.findByIdAndUpdate(req.params.categoriaId, { name, estabelecimento }, { new: true });
+        const categoria = await Categoria.findByIdAndUpdate(req.params.categoriaId, { name,cidade, estabelecimento }, { new: true });
 
         await categoria.save();
 

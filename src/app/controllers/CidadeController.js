@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:cidadeId', async (req, res) => {
     try {
-        const cidade = await Cidade.findById(req.params.cidadeId).populate(['estabelecimento']);
+        const cidade = await Cidade.findById(req.params.cidadeId).populate(['estabelecimento','categoria']);
 
         return res.send({ cidade });
     } catch (err) {
@@ -30,9 +30,9 @@ router.get('/:cidadeId', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
 
-        const { name, estabelecimento } = req.body;
+        const { name,categoria, estabelecimento } = req.body;
 
-        const cidade = await Cidade.create({ name, estabelecimento});
+        const cidade = await Cidade.create({ name,categoria, estabelecimento});
 
         await cidade.save();
 
@@ -45,9 +45,9 @@ router.post('/', async (req, res) => {
 router.put('/:cidadeId', async (req, res) => {
     try {
 
-        const { name, estabelecimento } = req.body;
+        const { name, categoria, estabelecimento } = req.body;
 
-        const cidade = await Cidade.findByIdAndUpdate(req.params.cidadeId, { name, estabelecimento }, { new: true });
+        const cidade = await Cidade.findByIdAndUpdate(req.params.cidadeId, { name,categoria, estabelecimento }, { new: true });
 
         await cidade.save();
 

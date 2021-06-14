@@ -17,6 +17,10 @@ const EstabelecimentoSchema = new mongoose.Schema({
         type: Number,
         require: true
     },
+    endereco: {
+        type: Strinig,
+        require: true
+    },
     reserva: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Reserva'
