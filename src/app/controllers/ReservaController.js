@@ -8,8 +8,10 @@ const router = express.Router();
 router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
+    const usuario = req.usuarioId
     try {
         const reservas = await Reserva.find({ usuario: usuario }).populate(['usuario', 'estabelecimento'])
+        console.log(reservas)
 
         return res.send({ reservas });
     } catch (err) {
