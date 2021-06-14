@@ -18,7 +18,7 @@ const EstabelecimentoSchema = new mongoose.Schema({
         require: true
     },
     endereco: {
-        type: Strinig,
+        type: String,
         require: true
     },
     reserva: [{
